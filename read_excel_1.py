@@ -42,6 +42,9 @@ def filling_stor_loc(work_sheet)->dict:
             name = 'None'
         quantity = work_sheet[row][2].value
         stor_bin = work_sheet[row][3].value
+        print(name, quantity, stor_bin)
+        if name == 'None' and quantity==stor_bin==None: # Условие, которое прекращает цикл если все ячейки строчки пустые
+            break
         if stor_bin not in stor_loc:
             stor_loc[stor_bin] = {name: [quantity]}
         else:
@@ -101,10 +104,10 @@ def check_3(input_dict:dict, general_set:set)->dict:
     for rock in general_set:
         amount_rock_1 = sum(tab_1_dict[rock])
         amount_rock_2 = sum(tab_2_dict[rock])
-        if amount_rock_1 == amount_rock_2:
+        if abs(amount_rock_1-amount_rock_2) <=5: # добавлен диапазон разницы в весе(5кг)
             amount_general.append(rock)
         else:
-            dif_amn_rock = amount_rock_1 - amount_rock_2
+            dif_amn_rock = abs(amount_rock_1 - amount_rock_2)
             difference_rock_list.append(str(rock + ': ' + str(dif_amn_rock)))
     return_dict = {'amount_general': amount_general, 'difference_rock_list': difference_rock_list}
     return return_dict
@@ -197,4 +200,5 @@ for key, value in out_date_structure.items():
 
 new_book.save('output_test_1.xlsx')
 new_book.close
+print('Запись завершена')
 
